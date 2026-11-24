@@ -39,5 +39,9 @@ Los cambios se integran primero en `develop` y luego se promueven a `master`.
 
 ## Estado actual
 
-Etapa de configuración inicial: dependencias y linter. Todavía no hay servidor ni
-pantallas implementadas; esos serán los próximos commits.
+- Backend: servidor Express con CORS, respuestas HTTP unificadas y endpoints mock
+  de autenticación (`/api/v1/auth/*`).
+- Frontend: pantallas de login, registro y recuperación de contraseña, con mocks
+  locales activados por defecto (`VITE_USE_MOCKS=true`).
+
+Sin base de datos: todo es simulado y preparado para reemplazarse por consultas reales.
