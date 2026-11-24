@@ -1,7 +1,8 @@
 # Backend
 
-API REST del prototipo, construida con **Express**. En esta etapa solo están
-instaladas las dependencias y configurado ESLint; todavía no hay servidor ni rutas.
+API REST del prototipo construida con **Express**. No hay base de datos: los datos
+son **mocks en memoria** y todas las respuestas siguen una estructura única, de modo
+que se puedan reemplazar por consultas reales sin cambiar el frontend.
 
 ## Requisitos
 
@@ -31,20 +32,56 @@ El archivo `.env` está ignorado por Git. Nunca se versiona: se commitea solo `s
 
 | Comando | Acción |
 | --- | --- |
-| `npm run dev` | Inicia el servidor con recarga automática (próximo commit) |
-| `npm start` | Inicia el servidor en producción (próximo commit) |
+| `npm run dev` | Inicia el servidor con recarga automática |
+| `npm start` | Inicia el servidor en producción |
 | `npm run lint` | Ejecuta ESLint sobre todo el proyecto |
 | `npm run lint:fix` | Ejecuta ESLint y corrige lo que puede corregir |
 
-## Dependencias principales
+## Endpoints mock
 
-- `express`: servidor HTTP y enrutamiento.
-- `cors`: configuración de CORS para el deploy.
-- `dotenv`: carga de variables de entorno.
-- `eslint`, `@eslint/js`, `globals` (dev): estandarización de código.
+Base: `http://localhost:3000/api/v1`
+
+| Método | Ruta | Descripción |
+| --- | --- | --- |
+| `GET` | `/health` | Verificación de que la API está activa |
+| `POST` | `/auth/login` | Ingreso simulado |
+| `POST` | `/auth/register` | Registro simulado (no persiste) |
+| `POST` | `/auth/forgot-password` | Recuperación simulada |
+
+Todas las respuestas tienen el formato:
+
+```json
+{
+  "success": true,
+  "message": "Ingreso simulado correctamente",
+  "data": { "user": { "id": 1, "name": "Usuario Demo", "email": "demo@test.com", "role": "admin" }, "token": "mock-token-..." },
+  "errors": []
+}
+```
+
+Usuario de prueba: `demo@test.com` / `123456`.
+
+Ejemplo rápido:
+
+```powershell
+Invoke-RestMethod -Uri http://localhost:3000/api/v1/auth/login `
+  -Method Post -ContentType 'application/json' `
+  -Body '{"email":"demo@test.com","password":"123456"}'
+```
+
+## Estructura
+
+```
+src/
+├── config/env.js              # carga de variables de entorno
+├── mocks/users.mock.js        # usuarios simulados
+├── modules/auth/auth.routes.js# rutas de autenticación
+├── utils/http.js              # respuestas HTTP unificadas
+└── server.js                  # Express + CORS + middlewares
+```
 
 ## Próximos pasos
 
-1. Crear `src/server.js` con el servidor Express y CORS.
-2. Unificar el formato de respuestas HTTP (2xx / 4xx / 5xx).
-3. Agregar los endpoints `/api/v1/...` con datos mock.
+1. Agregar las entidades de cada alumno (listado paginado, detalle y ABM mock).
+2. Exportar la colección de Postman.
+3. Configurar el deploy (CORS con la URL real del frontend).
