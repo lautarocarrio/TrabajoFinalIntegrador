@@ -1,14 +1,15 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Message from '../components/Message.jsx';
 import { authService } from '../services/authService.js';
+import { saveSession } from '../services/session.js';
 
 const emptyForm = { email: '', password: '' };
 
 export default function LoginPage() {
+  const navigate = useNavigate();
   const [form, setForm] = useState(emptyForm);
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const handleChange = ({ target: { name, value } }) => {
@@ -18,7 +19,6 @@ export default function LoginPage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError(null);
-    setSuccess(null);
     setLoading(true);
 
     try {
@@ -29,10 +29,8 @@ export default function LoginPage() {
         return;
       }
 
-      setSuccess({
-        message: response.body.message,
-        user: response.body.data.user,
-      });
+      saveSession(response.body.data);
+      navigate('/menu');
     } catch {
       setError({
         message: 'No se pudo conectar con la API. Verificá que el backend esté corriendo.',
@@ -48,12 +46,6 @@ export default function LoginPage() {
       <p className="form-subtitle">Ingresá con tu correo y contraseña.</p>
 
       <Message type="error" payload={error} />
-      {success && (
-        <Message
-          type="success"
-          payload={{ message: `${success.message} Bienvenido/a, ${success.user.name}.` }}
-        />
-      )}
 
       <form className="form" onSubmit={handleSubmit}>
         <div className="form-group">
