@@ -3,6 +3,7 @@ import AppLayout from './layouts/AppLayout.jsx';
 import AuthLayout from './layouts/AuthLayout.jsx';
 import ClasesPage from './pages/ClasesPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
+import MembresiaFormPage from './pages/MembresiaFormPage.jsx';
 import MembresiaPage from './pages/MembresiaPage.jsx';
 import MenuPage from './pages/MenuPage.jsx';
 import PerfilPage from './pages/PerfilPage.jsx';
@@ -27,7 +28,9 @@ export default function App() {
       <Route element={<AppLayout />}>
         <Route path="/menu" element={<MenuPage />} />
         <Route path="/clases" element={<ClasesPage />} />
-        <Route path="/membresia" element={<MembresiaPage />} />
+        <Route path="/membresias" element={<MembresiaPage />} />
+        <Route path="/membresias/nuevo" element={<MembresiaFormPage />} />
+        <Route path="/membresias/:id" element={<MembresiaFormPage />} />
         <Route path="/perfil" element={<ProfileRedirect />} />
         <Route path="/usuarios/:id" element={<PerfilPage />} />
       </Route>

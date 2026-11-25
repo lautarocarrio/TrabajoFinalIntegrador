@@ -48,6 +48,39 @@ Base: `http://localhost:3000/api/v1`
 | `POST` | `/auth/register` | Registro simulado (no persiste) |
 | `POST` | `/auth/forgot-password` | Recuperación simulada |
 
+### Membresías
+
+Campos respetando el DER (`MEMBRESIAS`): `id_membresia`, `usuario_id`,
+`fecha_inicio`, `fecha_fin`, `estado` (`activa` / `vencida` / `pendiente`).
+Cada respuesta incluye además `usuario` con un join simulado a `USUARIOS`.
+
+| Método | Ruta | Descripción |
+| --- | --- | --- |
+| `GET` | `/membresias` | Listado paginado, ordenado y filtrado |
+| `GET` | `/membresias/usuarios` | Opciones de usuarios para el formulario |
+| `GET` | `/membresias/:id` | Detalle de una membresía |
+| `POST` | `/membresias` | Alta (devuelve 201) |
+| `PUT` | `/membresias/:id` | Modificación parcial o total |
+| `DELETE` | `/membresias/:id` | Baja lógica sobre el mock en memoria |
+
+Query params del listado:
+
+| Parámetro | Descripción | Ejemplo |
+| --- | --- | --- |
+| `page` | Página (desde 1) | `page=2` |
+| `limit` | Registros por página (1-50) | `limit=10` |
+| `sortBy` | `id_membresia`, `usuario_id`, `fecha_inicio`, `fecha_fin`, `estado` | `sortBy=fecha_inicio` |
+| `order` | `asc` / `desc` | `order=desc` |
+| `estado` | Filtro por estado | `estado=activa` |
+| `usuario_id` | Filtro por socio | `usuario_id=1` |
+| `fechaDesde` / `fechaHasta` | Rango sobre `fecha_inicio` | `fechaDesde=2026-01-01` |
+
+Ejemplo:
+
+```powershell
+Invoke-RestMethod -Uri 'http://localhost:3000/api/v1/membresias?page=1&limit=5&estado=activa&sortBy=fecha_inicio&order=desc'
+```
+
 Todas las respuestas tienen el formato:
 
 ```json
@@ -74,8 +107,11 @@ Invoke-RestMethod -Uri http://localhost:3000/api/v1/auth/login `
 ```
 src/
 ├── config/env.js              # carga de variables de entorno
-├── mocks/users.mock.js        # usuarios simulados
-├── modules/auth/auth.routes.js# rutas de autenticación
+├── mocks/users.mock.js        # usuarios simulados (login)
+├── mocks/usuarios.mock.js     # resumen de USUARIOS para el join
+├── mocks/membresias.mock.js   # MEMBRESIAS en memoria + validaciones
+├── modules/auth/auth.routes.js # rutas de autenticación
+├── modules/membresias/        # rutas CRUD de membresías
 ├── utils/http.js              # respuestas HTTP unificadas
 └── server.js                  # Express + CORS + middlewares
 ```
