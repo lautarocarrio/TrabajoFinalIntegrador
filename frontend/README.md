@@ -51,7 +51,9 @@ pantallas van a consumir los endpoints Express sin modificarse.
 | `/recuperar-contrasena` | Recuperación de contraseña |
 | `/menu` | Menú principal con accesos a Clases, Membresía y Perfil |
 | `/clases` | Placeholder — a implementar por el alumno responsable |
-| `/membresia` | Placeholder — a implementar por el alumno responsable |
+| `/membresias` | Listado de membresías con filtros, orden y paginado |
+| `/membresias/nuevo` | Alta de membresía |
+| `/membresias/:id` | Detalle, edición y eliminación |
 | `/perfil` | Redirige a `/usuarios/{id}` del usuario logueado |
 | `/usuarios/:id` | Perfil del usuario (placeholder — a implementar) |
 
@@ -70,7 +72,9 @@ src/
 ├── layouts/AppLayout.jsx      # header + contenido + footer del área autenticada
 ├── pages/                     # Login, Register, Recuperar, Menú y placeholders
 ├── services/authService.js    # mocks / llamadas a la API
+├── services/membresiasService.js # CRUD mock o API de membresías
 ├── services/session.js        # usuario logueado guardado en localStorage
+├── mocks/membresias.mock.js   # espejo del mock del backend
 ├── styles/global.css          # estilos minimalistas
 ├── App.jsx                    # rutas
 └── main.jsx                   # arranque de React
@@ -78,7 +82,8 @@ src/
 
 ## Próximos pasos
 
-1. Que cada alumno reemplace su placeholder (`ClasesPage`, `MembresiaPage`,
-   `PerfilPage`) por la interfaz definitiva.
-2. Agregar listado, detalle y exportación de cada entidad.
-3. Conectar con el backend real usando `VITE_USE_MOCKS=false`.
+1. Reemplazar los placeholders de `ClasesPage` y `PerfilPage` (Membresías ya
+   está implementado).
+2. Agregar la exportación PDF/XLSX de membresías (pendiente).
+3. Generar la colección de Postman (pendiente).
+4. Probar contra el backend con `VITE_USE_MOCKS=false`.

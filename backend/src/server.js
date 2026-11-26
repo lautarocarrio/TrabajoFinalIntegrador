@@ -2,6 +2,7 @@ import cors from 'cors';
 import express from 'express';
 import { env } from './config/env.js';
 import authRoutes from './modules/auth/auth.routes.js';
+import membresiasRoutes from './modules/membresias/membresias.routes.js';
 import { fail, notFound, ok } from './utils/http.js';
 
 const app = express();
@@ -11,6 +12,7 @@ app.use(express.json());
 
 app.get('/api/v1/health', (_req, res) => ok(res, { status: 'ok' }, 'API mock activa'));
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/membresias', membresiasRoutes);
 
 app.use((_req, res) => notFound(res, 'Ruta no encontrada'));
 

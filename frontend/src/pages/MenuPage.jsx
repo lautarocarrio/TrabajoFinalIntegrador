@@ -14,7 +14,7 @@ export default function MenuPage() {
     },
     {
       label: 'Membresía',
-      to: '/membresia',
+      to: '/membresias',
       icon: '◆',
       description: 'Planes y socios',
     },
